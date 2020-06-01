@@ -10,7 +10,9 @@ private:
 	int minits;
 	int second;
 	void CheckTime();
-	void CheckTime(int &_hours, int &_minits, int &_second);
+	void CheckTime_positiv(int &_hours, int &_minits, int &_second);
+	void CheckTime_negativ(int &_hours, int &_minits, int &_second);
+	bool check(int count);
 public:
 	Time();
 	Time(int count);

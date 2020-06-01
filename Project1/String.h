@@ -11,7 +11,7 @@ private:
 public:
 	String();
 	String(int size, char symbol);
-	String(const char* str);
+	explicit String(const char* str);
 	String(const String &other);
 	void Print()const;
 	void Append(const char* str);

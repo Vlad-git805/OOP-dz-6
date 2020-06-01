@@ -1,5 +1,10 @@
 #include "Time.h"
 
+bool Time::check(int count)
+{
+	return (count >= 0);
+}
+
 void Time::CheckTime()
 {
 	while (this->second >= 60)
@@ -14,7 +19,7 @@ void Time::CheckTime()
 	}
 }
 
-void Time::CheckTime(int &_hours, int &_minits, int &_second)
+void Time::CheckTime_positiv(int &_hours, int &_minits, int &_second)
 {
 	while (_second >= 60)
 	{
@@ -28,16 +33,42 @@ void Time::CheckTime(int &_hours, int &_minits, int &_second)
 	}
 }
 
-Time::Time() : hours(0), minits(0), second(0) { }
-
-Time::Time(int count) : hours(count), minits(count), second(count) 
+void Time::CheckTime_negativ(int &_hours, int &_minits, int &_second)
 {
-	CheckTime();
+	while (_second < 0)
+	{
+		_minits--;
+		_second += 60;
+	}
+	while (_minits < 0)
+	{
+		_hours--;
+		_minits += 60;
+	}
 }
 
-Time::Time(int hours, int minits, int second) : hours(hours), minits(minits), second(second) 
+Time::Time() : hours(0), minits(0), second(0) { }
+
+Time::Time(int count) : Time()
 {
-	CheckTime();
+	if (check(count))
+	{
+		hours = count;
+		minits = count;
+		second = count;
+		CheckTime();
+	}
+}
+
+Time::Time(int hours, int minits, int second) : Time()
+{
+	if (check(hours) && check(minits) && check(second))
+	{
+		this->hours = hours;
+		this->minits = minits;
+		this->second = second;
+		CheckTime();
+	}
 }
 
 void Time::ShowTime()const
@@ -62,7 +93,7 @@ Time Time::operator+(const Time& other)
 	int _hours = this->hours + other.hours;
 	int _minits = this->minits + other.minits;
 	int _second = this->second + other.second;
-	CheckTime(_hours, _minits, _second);
+	CheckTime_positiv(_hours, _minits, _second);
 	return Time(_hours, _minits, _second);
 }
 Time Time::operator-(const Time& other)
@@ -70,16 +101,7 @@ Time Time::operator-(const Time& other)
 	int _hours = this->hours - other.hours;
 	int _minits = this->minits - other.minits;
 	int _second = this->second - other.second;
-	while (_second < 0)
-	{
-		_minits--;
-		_second += 60;
-	}
-	while (_minits < 0)
-	{
-		_hours--;
-		_minits += 60;
-	}
+	CheckTime_negativ(_hours, _minits, _second);
 	return Time(_hours, _minits, _second);
 }
 Time Time::operator*(const Time& other)
@@ -87,7 +109,7 @@ Time Time::operator*(const Time& other)
 	int _hours = this->hours * other.hours;
 	int _minits = this->minits * other.minits;
 	int _second = this->second * other.second;
-	CheckTime(_hours, _minits, _second);
+	CheckTime_positiv(_hours, _minits, _second);
 	return Time(_hours, _minits, _second);
 }
 
